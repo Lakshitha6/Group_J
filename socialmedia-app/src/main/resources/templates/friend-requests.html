@@ -1,31 +1,33 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/friend-requests.css}">
     <title>Friend Requests</title>
 </head>
 <body>
-<h2>Incoming Requests</h2>
+
+<h2>Incoming Friend Requests</h2>
 <ul>
     <li th:each="req : ${incoming}">
         <span th:text="${req.sender.firstName + ' ' + req.sender.lastName}"></span>
-        <form th:action="@{'/friend/accept/' + ${req.id}}" method="post">
+        <form th:action="@{'/friend/accept/' + ${req.id}}" method="post" style="display:inline">
             <button>Accept</button>
         </form>
-        <form th:action="@{'/friend/decline/' + ${req.id}}" method="post">
+        <form th:action="@{'/friend/decline/' + ${req.id}}" method="post" style="display:inline">
             <button>Decline</button>
         </form>
     </li>
 </ul>
 
-<h2>Outgoing Requests</h2>
+<h2>Outgoing Friend Requests</h2>
 <ul>
     <li th:each="req : ${outgoing}">
-        <span th:text="${req.receiver.firstName + ' ' + req.receiver.lastName}"></span>
-        <span th:text="'Status: ' + ${req.status}"></span>
+        <span th:text="${req.receiver.firstName + ' ' + req.receiver.lastName}"></span> -
+        <span th:text="${req.status}">Status</span>
     </li>
 </ul>
-<a href="/home">Back to home</a>
 
+<a href="/home">Back to Home</a>
 </body>
 </html>
