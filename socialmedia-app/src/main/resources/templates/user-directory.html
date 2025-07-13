@@ -2,20 +2,31 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>User Directory</title>
+    <title>Users</title>
+    <link rel="stylesheet" th:href="@{/css/user-directory.css}">
 </head>
 <body>
-<h2>All Users</h2>
+<div class="container">
+    <div class="header">
+        <h2>Discover People</h2>
+    </div>
 
-<ul>
-    <li th:each="u : ${users}">
-        <span th:text="${u.firstName + ' ' + u.lastName}"></span>
-        <form th:action="@{'/friend/request/' + ${u.id}}" method="post">
-            <button type="submit">Send Friend Request</button>
-        </form>
-    </li>
-</ul>
+    <ul class="users-grid">
+        <li class="user-card" th:each="u : ${users}">
+            <div class="user-info">
+                <div class="user-avatar" th:text="${u.firstName.substring(0,1).toUpperCase() + u.lastName.substring(0,1).toUpperCase()}">
+                </div>
+                <h3 class="user-name" th:text="${u.firstName + ' ' + u.lastName}"></h3>
+            </div>
+            <form class="friend-request-form" th:action="@{'/friend/request/' + ${u.id}}" method="post">
+                <button type="submit" class="friend-request-btn">
+                    ✨ Send Friend Request
+                </button>
+            </form>
+        </li>
+    </ul>
 
-<a href="/home">Back to Home</a>
+    <a href="/home" class="back-link">← Back to Home</a>
+</div>
 </body>
 </html>
