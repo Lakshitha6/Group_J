@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Directory</title>
+</head>
+<body>
+<h2>All Users</h2>
+
+<ul>
+    <li th:each="u : ${users}">
+        <span th:text="${u.firstName + ' ' + u.lastName}"></span>
+        <form th:action="@{'/friend/request/' + ${u.id}}" method="post">
+            <button type="submit">Send Friend Request</button>
+        </form>
+    </li>
+</ul>
+
+<a href="/home">Back to Home</a>
+</body>
+</html>
