@@ -8,25 +8,37 @@
 <body>
 <div class="header-section">
   <div class="container">
-    <h2>Welcome!</h2>
-
-    <form th:action="@{/post}" th:object="${postDTO}" method="post">
-      <textarea th:field="*{content}" placeholder="What's on your mind?" rows="3" cols="50"></textarea>
-      <br>
-      <button type="submit">Post</button>
-    </form>
-
-    <hr>
-
-    <h3>Your Posts:</h3>
-    <ul>
-      <li th:each="post : ${posts}">
-        <p th:text="${post.content}"></p>
-        <small th:text="${#dates.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
-      </li>
-    </ul>
-    <p><a href="/users">Find Friends</a></p>
-    <a href="/logout">Logout</a>
-
+    <h2>Welcome to group-J-Book!</h2>
+    <div class="nav-links">
+      <p><a href="/users">Find Friends</a></p>
+      <a href="/friend/requests">View Friend Requests</a>
+      <a href="/logout">Logout</a>
+    </div>
   </div>
 </div>
+
+<div class="container">
+  <form th:action="@{/post}" th:object="${postDTO}" method="post">
+    <textarea th:field="*{content}" placeholder="What's on your mind?" rows="3" cols="50"></textarea>
+    <br>
+    <button type="submit">Post</button>
+  </form>
+
+  <hr>
+
+  <h3>My Posts:</h3>
+  <ul>
+    <li th:each="post : ${posts}">
+      <p>
+        <strong th:if="${post.author != null}">
+          <span th:text="${post.author.firstName}"></span> <span th:text="${post.author.lastName}"></span>
+        </strong>
+        <strong th:if="${post.author == null}">Unknown Author</strong>
+        <span th:text="${post.content}">Post content</span><br>
+        <small th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
+      </p>
+    </li>
+  </ul>
+</div>
+</body>
+</html>
