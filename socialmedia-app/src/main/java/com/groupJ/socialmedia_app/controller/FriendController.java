@@ -1,6 +1,7 @@
 package com.groupJ.socialmedia_app.controller;
 
 import com.groupJ.socialmedia_app.entity.User;
+import com.groupJ.socialmedia_app.repository.FriendRequestRepository;
 import com.groupJ.socialmedia_app.service.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,34 +26,35 @@ public class FriendController {
         model.addAttribute("users", users);
         return "user-directory";
     }
+
     @PostMapping("/friend/request/{receiverId}")
-    public String sendRequest(@PathVariable Long receiverId, Principal principal) {
+    public String sendRequest(@PathVariable long receiverId, Principal principal){
         try {
             friendService.sendFriendRequest(receiverId, principal.getName());
         } catch (Exception e) {
-            // Optional: Add error flash message
+            throw new RuntimeException(e.getMessage());
         }
         return "redirect:/users";
     }
 
     @GetMapping("/friend/requests")
-    public String viewRequests(Model model, Principal principal) {
-        String email = principal.getName();
-        model.addAttribute("incoming", friendService.getIncomingRequests(email));
-        model.addAttribute("outgoing", friendService.getOutgoingRequests(email));
+    public String viewRequests(Model model, Principal principal){
+        String currentEmail = principal.getName();
+        model.addAttribute("incoming", friendService.getIncomingRequests(currentEmail));
+        model.addAttribute("outgoing", friendService.getOutgoingRequests(currentEmail));
+
         return "friend-requests";
     }
 
-    @PostMapping("/friend/accept/{id}")
-    public String acceptRequest(@PathVariable Long id) {
-        friendService.acceptRequest(id);
+    @PostMapping("/friend/accept/{requestId}")
+    public String acceptRequest(@PathVariable long requestId){
+        friendService.acceptRequest(requestId);
         return "redirect:/friend/requests";
     }
 
-    @PostMapping("/friend/decline/{id}")
-    public String declineRequest(@PathVariable Long id) {
-        friendService.declineRequest(id);
+    @PostMapping("/friend/decline/{requestId}")
+    public String declineRequest(@PathVariable long requestId) {
+        friendService.declineRequest(requestId);
         return "redirect:/friend/requests";
     }
-
 }
