@@ -8,6 +8,25 @@
 <body>
 <div class="header-section">
   <div class="container">
-    <h2>Welcome to group-J-Book!</h2>
+    <h2>Welcome!</h2>
+
+    <form th:action="@{/post}" th:object="${postDTO}" method="post">
+      <textarea th:field="*{content}" placeholder="What's on your mind?" rows="3" cols="50"></textarea>
+      <br>
+      <button type="submit">Post</button>
+    </form>
+
+    <hr>
+
+    <h3>Your Posts:</h3>
+    <ul>
+      <li th:each="post : ${posts}">
+        <p th:text="${post.content}"></p>
+        <small th:text="${#dates.format(post.createdAt, 'yyyy-MM-dd HH:mm')}"></small>
+      </li>
+    </ul>
+
+    <a href="/logout">Logout</a>
+
   </div>
 </div>

@@ -1,6 +1,9 @@
 package com.groupJ.socialmedia_app.controller;
 
+import com.groupJ.socialmedia_app.dto.PostDTO;
 import com.groupJ.socialmedia_app.dto.RegisterDTO;
+import com.groupJ.socialmedia_app.entity.Post;
+import com.groupJ.socialmedia_app.service.PostService;
 import com.groupJ.socialmedia_app.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,11 +14,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import java.security.Principal;
+import java.util.List;
+
 @Controller
 public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private PostService postService;
 
     @GetMapping("/register")
     public String showRegisterForm(Model model) {
@@ -45,7 +54,20 @@ public class AuthController {
     }
 
     @GetMapping("/home")
-    public String home() {
+    public String home(Model model, Principal principal) {
+        String userEmail = principal.getName();
+        List<Post> posts = postService.getPostsByUser(userEmail);
+        model.addAttribute("posts", posts);
+        model.addAttribute("postDTO", new PostDTO());
         return "home";
     }
+
+    @PostMapping("/post")
+    public String submitPost(@ModelAttribute PostDTO postDTO, Principal principal) {
+        postService.createPost(postDTO, principal.getName());
+        return "redirect:/home";
+    }
+
+
+
 }
