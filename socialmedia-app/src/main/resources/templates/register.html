@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/css/register.css}">
+    <title>Register</title>
+</head>
+<body>
+<form th:action="@{/process-register}" th:object="${registerDTO}" method="post">
+    <input type="text" th:field="*{firstName}" placeholder="First Name" />
+    <input type="text" th:field="*{lastName}" placeholder="Last Name" />
+    <input type="email" th:field="*{email}" placeholder="Email" />
+    <input type="password" th:field="*{password}" placeholder="Password" />
+    <button type="submit">Register</button>
+</form>
+
+<p th:if="${error}" th:text="${error}" style="color:red;"></p>
+</body>
+</html>
